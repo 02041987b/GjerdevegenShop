@@ -36,7 +36,9 @@ Secure payment processing (simulated)
 Comprehensive error handling
 
 ✨ Features
+
 User Features
+
 ✅ User registration and authentication
 
 ✅ Product browsing with categories
@@ -52,6 +54,7 @@ User Features
 ✅ User profile management
 
 Admin Features
+
 🔒 Admin dashboard with analytics
 
 🔒 Product management (CRUD)
@@ -63,6 +66,7 @@ Admin Features
 🔒 Contact message handling
 
 Technical Features
+
 🛡️ CSRF protection
 
 🔐 Password hashing
@@ -75,8 +79,11 @@ Technical Features
 
 🎨 Custom error pages (403, 404, 500)
 
+
 💻 Technologies Used
+
 Backend
+
 Python 3 - Primary programming language
 
 Flask - Web framework
@@ -88,6 +95,7 @@ Jinja2 - Templating engine
 Werkzeug - Security and utility functions
 
 Frontend
+
 HTML5 - Markup
 
 CSS3 - Styling
@@ -101,11 +109,13 @@ jQuery - DOM manipulation
 Font Awesome - Icons
 
 Database
+
 SQLite (Development)
 
 PostgreSQL (Production-ready)
 
 🚀 Installation
+
 Prerequisites
 Python 3.8+
 
