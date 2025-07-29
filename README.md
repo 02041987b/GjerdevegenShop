@@ -270,18 +270,18 @@ Logging for technical errors
 Graceful degradation
 
 📂 Project Structure
-text
+```bash
 gjerdevegenshop/
-├── static/               # Static files
-│   ├── css/              # Stylesheets
-│   ├── images/           # Product images and assets
-│   └── js/               # JavaScript files
-├── templates/            # HTML templates
-│   ├── admin/            # Admin interface
-│   ├── errors/           # Error pages
-│   └── *.html            # Main templates
-├── instance
-│                         # Database
+├── 📂 static/                # Static files
+│   ├── 📂 css/               # Stylesheets
+│   ├── 📂 images/            # Product images and assets
+│   └── 📂 js/                # JavaScript files
+├── 📂 templates/             # HTML templates
+│   ├── 📂 admin/             # Admin interface
+│   ├── 📂 errors/            # Error pages
+│   └── *.html                # Main templates
+├── instance                  # Database
+│                         
 ├── app.py                # Main application file
 ├── api_routes.py         # API endpoints
 ├── models.py             # Database models
