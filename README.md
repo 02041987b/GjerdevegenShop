@@ -37,7 +37,7 @@ Comprehensive error handling
 
 ✨ Features
 
-User Features
+👤 User Features
 
 ✅ User registration and authentication
 
@@ -53,7 +53,7 @@ User Features
 
 ✅ User profile management
 
-Admin Features
+👑 Admin Features
 
 🔒 Admin dashboard with analytics
 
@@ -65,7 +65,7 @@ Admin Features
 
 🔒 Contact message handling
 
-Technical Features
+⚙️ Technical Features
 
 🛡️ CSRF protection
 
@@ -82,7 +82,7 @@ Technical Features
 
 💻 Technologies Used
 
-Backend
+⚙️ Backend
 
 Python 3 - Primary programming language
 
@@ -94,7 +94,7 @@ Jinja2 - Templating engine
 
 Werkzeug - Security and utility functions
 
-Frontend
+🎨 Frontend
 
 HTML5 - Markup
 
@@ -108,26 +108,25 @@ jQuery - DOM manipulation
 
 Font Awesome - Icons
 
-Database
+💾 Database
 
 SQLite (Development)
 
 PostgreSQL (Production-ready)
-
 🚀 Installation
 
-Prerequisites
+📋 Prerequisites
 Python 3.8+
 
 pip package manager
 
 Virtual environment (recommended)
 
-Setup Instructions
+🛠️ Setup Instructions
 Clone the repository:
 
 bash
-git clone https://github.com/02041987b/GjerdevegenShop
+git clone https://github.com/02041987b/GjerdevegenShop  
 cd gjerdevegenshop
 Create and activate virtual environment:
 
@@ -147,18 +146,21 @@ Run the development server:
 
 bash
 flask run
-Access the application at https://cs502025.pythonanywhere.com/
+Access the application at https://cs502025.pythonanywhere.com/  
 
 ⚙️ Configuration
+
+**Basic Configuration**
 The application can be configured via environment variables or directly in app.py:
 
-python
 # Basic configuration
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/site.db'
 app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'static', 'images')
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['MAX_FILE_SIZE'] = 2 * 1024 * 1024  # 2MB
+
+🏭 **Production Configuration**
 For production, consider:
 
 Using environment variables
@@ -172,7 +174,7 @@ Enabling HTTPS
 🔌 API Endpoints
 The application provides a RESTful API under /api prefix:
 
-Products
+🛍️ Products
 GET /api/products - List all products
 
 POST /api/products - Create new product
@@ -181,17 +183,17 @@ PUT /api/products/<id> - Update product
 
 DELETE /api/products/<id> - Delete product
 
-Users
+👤 Users
 GET /api/users - List all users (admin only)
 
 DELETE /api/users/<id> - Delete user (admin only)
 
-Orders
+📦 Orders
 GET /api/orders - List all orders (admin only)
 
 PUT /api/orders/<id> - Update order status (admin only)
 
-Cart
+🛒 Cart
 PUT /api/cart/item/<item_id> - Update cart item quantity
 
 DELETE /api/cart/item/<item_id> - Remove item from cart
@@ -199,7 +201,7 @@ DELETE /api/cart/item/<item_id> - Remove item from cart
 🗃️ Database Models
 Key models and their relationships:
 
-Diagram
+📊 Diagram
 Code
 erDiagram
     User ||--o{ CartItem : has
@@ -207,6 +209,8 @@ erDiagram
     Product ||--o{ CartItem : in
     Product ||--o{ OrderItem : in
     Order ||--o{ OrderItem : contains
+
+💻 **Models Details**
 Detailed model specifications:
 
 User
@@ -251,6 +255,8 @@ status: Processing/Paid/Shipped/etc.
 Relationships: User, OrderItems
 
 🚨 Error Handling
+
+🚧 Custom Error Pages
 Custom error pages for:
 
 403 Forbidden - Spooky animated page for unauthorized access
@@ -259,6 +265,7 @@ Custom error pages for:
 
 500 Server Error - Technical error page with gears animation
 
+🛠️ Error Handling Implementation
 Error handling includes:
 
 Database transaction rollback
@@ -270,6 +277,7 @@ Logging for technical errors
 Graceful degradation
 
 📂 Project Structure
+📁 Directory Structure
 ```bash
 gjerdevegenshop/
 ├── 📂 static/                # Static files
