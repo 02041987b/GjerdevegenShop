@@ -1,0 +1,237 @@
+/* General */
+body {
+    font-family: sans-serif;
+    background: #fff;
+    line-height: 1.7;
+    color: #333;
+}
+
+.main_content {
+    padding-top: 90px; /* Отступ для фиксированной шапки */
+    min-height: calc(100vh - 150px); /* Гарантирует, что футер будет внизу */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header_container {
+    height: 90px;
+}
+
+.header_content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.main_nav {
+    margin-left: 40px;
+}
+
+.main_nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+.header_extra {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Login & Register */
+.login_form {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.login_form input {
+    height: 32px;
+    font-size: 13px;
+    width: 120px;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+    border-radius: 3px;
+}
+
+.login_form button {
+    height: 32px;
+    border: none;
+    background: #0d6efd;
+    color: white;
+    padding: 0 12px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.register_link {
+    margin-left: 5px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* User Profile & Logout */
+.user_profile a, .logout_button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.shopping_cart a {
+    display: flex;
+    align-items: center;
+}
+
+.shopping_cart div {
+    margin-left: 8px;
+    font-size: 12px;
+}
+
+/* Search & Hamburger */
+.search, .hamburger {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.search_panel {
+    display: none;
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e5e5e5;
+}
+
+.search_panel.active {
+    display: block;
+}
+
+.search_form {
+    display: flex;
+}
+
+.search_input {
+    flex-grow: 1;
+    height: 40px;
+    border: 1px solid #ccc;
+    padding: 0 20px;
+}
+
+.search_button {
+    height: 40px;
+    border: none;
+    background: #007bff;
+    color: white;
+    padding: 0 20px;
+}
+
+/* Mobile Menu */
+.hamburger {
+    display: none;
+}
+
+.menu_mm {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    background: #fff;
+    z-index: 101;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transition: left 0.4s ease;
+    padding: 20px;
+}
+
+.menu_mm.active {
+    left: 0;
+}
+
+.menu_close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.page_menu_nav {
+    margin-top: 50px;
+}
+
+.page_menu_nav li {
+    margin-bottom: 15px;
+}
+
+/* Icon Boxes */
+.icon_boxes {
+    padding: 60px 0;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.icon_box {
+    text-align: center;
+}
+
+.icon_box_image img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
+.icon_box_title {
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+.icon-img {
+    width: 60px;               /* фиксированная ширина */
+    height: 60px;              /* фиксированная высота */
+    object-fit: contain;       /* сохраняет пропорции изображения */
+    display: inline-block;     /* чтобы центрирование работало корректно */
+}
+
+/* Footer */
+.footer {
+    padding: 40px 0;
+    background: #343a40;
+    color: #f8f9fa;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .main_nav, .login_form, .register_link, .user_profile, .logout_button {
+        display: none;
+    }
+    .hamburger {
+        display: block;
+    }
+}
