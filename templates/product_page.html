@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ product.name }} - GjerdevegenShop
+{% endblock %}
+
+{% block content %}
+<div class="container my-3 my-lg-5">
+    <div class="row g-4">
+        <!-- Изображение товара -->
+        <div class="col-lg-6">
+            <div class="product-image-container bg-light p-3 rounded-3 text-center">
+                <img src="{{ url_for('static', filename='images/' + product.image_file) }}"
+                     onerror="this.src='{{ url_for('static', filename='images/product_placeholder.png') }}'"
+                     class="img-fluid"
+                     style="max-height: 60vh; object-fit: contain;"
+                     alt="{{ product.name }}"
+                     loading="lazy">
+            </div>
+        </div>
+
+        <!-- Информация о товаре -->
+        <div class="col-lg-6">
+            <h1 class="mb-2">{{ product.name }}</h1>
+            <p class="text-muted mb-4">Category: {{ product.category }}</p>
+            
+            <!-- Автоматическое форматирование описания -->
+            <div class="product-description">
+                {% set desc = product.description %}
+                
+                <!-- Description -->
+                <div class="mb-4">
+                    <h5 class="fw-bold text-decoration-underline mb-3">Description</h5>
+                    <div class="ps-2">
+                        {{ desc.split('Description :')[1].split('Key Specs :')[0].split('Pros :')[0].split('Cons :')[0]|trim|replace('\n', '<br>')|safe }}
+                    </div>
+                </div>
+                
+                <!-- Key Specs -->
+                {% if 'Key Specs :' in desc %}
+                <div class="mb-4">
+                    <h5 class="fw-bold text-decoration-underline mb-3">Key Specs</h5>
+                    <ul class="ps-3">
+                        {% for spec in desc.split('Key Specs :')[1].split('Pros :')[0].split('Cons :')[0].split('\n') %}
+                            {% if spec|trim %}
+                            <li>{{ spec|trim }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <!-- Pros -->
+                {% if 'Pros :' in desc %}
+                <div class="mb-4">
+                    <h5 class="fw-bold text-decoration-underline mb-3 text-success">Pros</h5>
+                    <ul class="ps-3">
+                        {% for pro in desc.split('Pros :')[1].split('Cons :')[0].split('\n') %}
+                            {% if pro|trim %}
+                            <li>{{ pro|trim }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                <!-- Cons -->
+                {% if 'Cons :' in desc %}
+                <div class="mb-4">
+                    <h5 class="fw-bold text-decoration-underline mb-3 text-primary">Cons</h5>
+                    <ul class="ps-3">
+                        {% for con in desc.split('Cons :')[1].split('\n') %}
+                            {% if con|trim %}
+                            <li>{{ con|trim }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Цена и кнопка -->
+            <div class="price-section p-3 rounded-3 mt-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center">
+                    <div class="mb-3 mb-sm-0">
+                        <span class="display-6 fw-bold">${{ "%.2f"|format(product.price) }}</span>
+                        {% if product.stock_quantity > 0 %}
+                            <span class="badge bg-success ms-2">In Stock</span>
+                        {% else %}
+                            <span class="badge bg-danger ms-2">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <button class="btn btn-primary btn-lg px-4 py-2"
+                            onclick="addToCart({{ product.id }})"
+                            {% if product.stock_quantity <= 0 %}disabled{% endif %}>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-description h5 {
+        letter-spacing: 0.5px;
+        padding-bottom: 5px;
+    }
+    .product-description ul {
+        padding-left: 1.5rem;
+    }
+    .product-description li {
+        margin-bottom: 0.5rem;
+        list-style-type: disc;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Contact Us - GjerdevegenShop
+{% endblock %}
+
+{% block content %}
+<div class="contact_section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 contact_col">
+                <div class="get_in_touch">
+                    <div class="alert alert-info text-center" role="alert">
+  We are here to help. Whether you have feedback about our store, are looking for a product not yet in our catalog, or have a question about your order or delivery, please send us a message below. Your input is valuable to us.
+</div>
+                    <div class="contact_form_container mt-4">
+                        <form method="POST" action="{{ url_for('contact') }}" id="contact_form" class="contact_form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name">First Name*</label>
+                                    <input type="text" id="first_name" name="first_name" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name">Last Name*</label>
+                                    <input type="text" id="last_name" name="last_name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Your Email*</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message">Message*</label>
+                                <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 contact_col">
+                <div class="contact_info">
+                    <div class="contact_info_section">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

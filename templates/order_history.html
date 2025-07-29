@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Your Order History{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Your Order History</h2>
+    
+    {% for order in orders %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <h5>Order #{{ order.order_number }}</h5>
+                <span class="text-muted">Placed on: {{ order.order_date.strftime('%Y-%m-%d') }}</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Total:</strong> ${{ "%.2f"|format(order.total_price) }}</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="badge bg-{{ 'success' if order.status == 'Paid' else 'warning' }}">
+                            {{ order.status }}
+                        </span>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Items:</h6>
+                    <ul class="list-unstyled">
+                        {% for item in order.items %}
+                        <li>{{ item.product.name }} (x{{ item.quantity }})</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        You have no past orders.
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

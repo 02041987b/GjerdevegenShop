@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Product Catalog{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1>Our Product Catalog</h1>
+        <p class="lead text-muted">Browse our products by category</p>
+    </div>
+
+    <div class="row">
+        {% if categories %}
+            {% for category in categories %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 text-center shadow-sm category-card">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h3 class="card-title">{{ category }}</h3>
+                            <a href="{{ url_for('category_view', category_name=category) }}" class="btn btn-primary mt-3 stretched-link">View Products</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <p class="text-center">No categories found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block head_extra %}
+<style>
+    .category-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+{% endblock %}

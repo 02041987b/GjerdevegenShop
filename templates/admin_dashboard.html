@@ -1,0 +1,475 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - GjerdevegenShop{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Admin Panel</h2>
+
+    <div class="card shadow-sm mb-5">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h3 class="h5 mb-0">Manage Products</h3>
+            <input type="text" id="searchProductInput" class="form-control" style="width: 250px;" placeholder="Search products...">
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-success btn-sm mb-3" id="addNewProductBtn">
+                <i class="fa fa-plus"></i> Add New Product
+            </button>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productList">
+                        <tr><td colspan="6" class="text-center">Loading products...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Manage Orders</h3>
+            <input type="text" id="searchOrderInput" class="form-control" style="width: 250px;" placeholder="Search orders...">
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
+                            {% for order, username in orders %}
+                            <tr>
+                                <td>{{ order.order_number }}</td>
+                                <td>{{ username }}</td>
+                                <td>${{ "%.2f"|format(order.total_price) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if order.status == 'Paid' else 'warning' }}">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                                <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin_order_details', order_id=order.id) }}" class="btn btn-sm btn-info">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">No orders found</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-5">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h3 class="h5 mb-0">Manage Users</h3>
+            <input type="text" id="searchUserInput" class="form-control" style="width: 250px;" placeholder="Search users...">
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userList">
+                        <tr><td colspan="5" class="text-center">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="h5 mb-0">Contact Form Messages</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Received</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messageList">
+                        <tr><td colspan="5" class="text-center">Loading messages...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm" novalidate>
+                    <input type="hidden" id="productId" name="id">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Name*</label>
+                        <input type="text" id="productName" name="name" class="form-control" required>
+                        <div class="invalid-feedback">Please provide a product name.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Price ($)*</label>
+                        <input type="number" step="0.01" id="productPrice" name="price" class="form-control" required min="0.01">
+                        <div class="invalid-feedback">Please provide a valid price.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productStock" class="form-label">Stock Quantity*</label>
+                        <input type="number" id="productStock" name="stock_quantity" class="form-control" required min="0" value="0">
+                        <div class="invalid-feedback">Please provide a valid stock quantity.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Category*</label>
+                        <input type="text" id="productCategory" name="category" class="form-control" required>
+                        <div class="invalid-feedback">Please provide a category.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Description</label>
+                        <textarea id="productDescription" name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" id="productImage" name="image" value="default.png">
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let allProducts = [], allUsers = [], allMessages = [];
+    const productModal = new bootstrap.Modal('#productModal');
+    const currentAdminId = {{ session.get('user_id', 0) }};
+    const toast = window.Toast ? new Toast() : null;
+
+    function showAlert(message, isSuccess = true) {
+        if (toast) {
+            toast.show(message, isSuccess);
+        } else {
+            alert(message);
+        }
+    }
+
+    function loadAllData() {
+        loadProducts();
+        loadUsers();
+        loadMessages();
+    }
+
+    function loadProducts() {
+        $.get("/api/products")
+            .done(data => {
+                allProducts = data;
+                renderProducts(data);
+            })
+            .fail(() => {
+                $('#productList').html('<tr><td colspan="6" class="text-center text-danger">Failed to load products</td></tr>');
+            });
+    }
+
+    function loadUsers() {
+        $.get("/api/users")
+            .done(data => {
+                allUsers = data;
+                renderUsers(data);
+            })
+            .fail(() => {
+                $('#userList').html('<tr><td colspan="5" class="text-center text-danger">Failed to load users</td></tr>');
+            });
+    }
+
+    function loadMessages() {
+        $.get("/api/messages")
+            .done(data => {
+                allMessages = data;
+                renderMessages(data);
+            })
+            .fail(() => {
+                $('#messageList').html('<tr><td colspan="5" class="text-center text-danger">Failed to load messages</td></tr>');
+            });
+    }
+
+    function renderProducts(products) {
+        const tbody = $('#productList').empty();
+
+        if (products.length === 0) {
+            tbody.append('<tr><td colspan="6" class="text-center">No products found</td></tr>');
+            return;
+        }
+
+        products.forEach(p => {
+            tbody.append(`
+                <tr>
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>$${parseFloat(p.price).toFixed(2)}</td>
+                    <td>${p.stock_quantity}</td>
+                    <td>${p.category}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm edit-product" data-id="${p.id}" title="Edit">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-product" data-id="${p.id}" title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+
+    function renderUsers(users) {
+        const tbody = $('#userList').empty();
+
+        if (users.length === 0) {
+            tbody.append('<tr><td colspan="5" class="text-center">No users found</td></tr>');
+            return;
+        }
+
+        users.forEach(u => {
+            const deleteBtn = u.id !== currentAdminId
+                ? `<button class="btn btn-danger btn-sm delete-user" data-id="${u.id}" title="Delete"><i class="fa fa-trash"></i></button>`
+                : `<button class="btn btn-secondary btn-sm" disabled title="Cannot delete yourself"><i class="fa fa-trash"></i></button>`;
+
+            tbody.append(`
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.username}</td>
+                    <td>${u.email}</td>
+                    <td>${u.role}</td>
+                    <td>${deleteBtn}</td>
+                </tr>
+            `);
+        });
+    }
+
+    function renderMessages(messages) {
+        const tbody = $('#messageList').empty();
+
+        if (messages.length === 0) {
+            tbody.append('<tr><td colspan="5" class="text-center">No messages found</td></tr>');
+            return;
+        }
+
+        messages.forEach(msg => {
+            tbody.append(`
+                <tr>
+                    <td>${msg.from}<br><small>${msg.email}</small></td>
+                    <td>${msg.subject}</td>
+                    <td><small>${msg.message}</small></td>
+                    <td>${msg.received_at}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm delete-message" data-id="${msg.id}" title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+
+    // Search functionality
+    $('#searchProductInput').on('input', function() {
+        const query = $(this).val().toLowerCase();
+        const filtered = allProducts.filter(p =>
+            p.name.toLowerCase().includes(query) ||
+            p.category.toLowerCase().includes(query)
+        );
+        renderProducts(filtered);
+    });
+
+    $('#searchUserInput').on('input', function() {
+        const query = $(this).val().toLowerCase();
+        const filtered = allUsers.filter(u =>
+            u.username.toLowerCase().includes(query) ||
+            u.email.toLowerCase().includes(query)
+        );
+        renderUsers(filtered);
+    });
+
+    // Product modal handling
+    $('#addNewProductBtn').click(function() {
+        $('#productModalLabel').text('Add New Product');
+        $('#productForm')[0].reset();
+        $('#productId').val('');
+        $('#productImage').val('default.png');
+        productModal.show();
+    });
+
+    // Edit product
+    $(document).on('click', '.edit-product', function() {
+        const productId = $(this).data('id');
+        const product = allProducts.find(p => p.id == productId);
+
+        if (product) {
+            $('#productModalLabel').text('Edit Product');
+            $('#productId').val(product.id);
+            $('#productName').val(product.name);
+            $('#productPrice').val(product.price);
+            $('#productStock').val(product.stock_quantity);
+            $('#productCategory').val(product.category);
+            $('#productDescription').val(product.description || '');
+            $('#productImage').val(product.image || 'default.png');
+            productModal.show();
+        } else {
+            showAlert('Product not found!', false);
+        }
+    });
+
+    // Form submission
+    $('#productForm').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            $(form).addClass('was-validated');
+            return;
+        }
+
+        const productId = $('#productId').val();
+        const method = productId ? 'PUT' : 'POST';
+        const url = productId
+  ? "/api/products/" + productId  // Для обновления существующего товара
+  : "/api/products";             // Для создания нового товара
+
+        const formData = {
+            id: productId || null,
+            name: $('#productName').val(),
+            price: parseFloat($('#productPrice').val()),
+            stock_quantity: parseInt($('#productStock').val()),
+            category: $('#productCategory').val(),
+            description: $('#productDescription').val(),
+            image: $('#productImage').val()
+        };
+
+        $.ajax({
+            url: url,
+            type: method,
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(res) {
+                productModal.hide();
+                showAlert(res.message, true);
+                loadProducts();
+                $(form).removeClass('was-validated');
+            },
+            error: function(xhr) {
+                const errorMsg = xhr.responseJSON?.message || 'An error occurred';
+                showAlert(errorMsg, false);
+                console.error('Error:', xhr.responseJSON);
+            }
+        });
+    });
+
+    // Delete handlers
+    $(document).on('click', '.delete-product', function() {
+        if (!confirm('Are you sure you want to delete this product?')) return;
+
+        const productId = $(this).data('id');
+        $.ajax({
+            url: "/api/products/" + productId,
+            type: 'DELETE',
+            success: function(res) {
+                showAlert(res.message, true);
+                loadProducts();
+            },
+            error: function(xhr) {
+                showAlert(xhr.responseJSON?.message || 'Delete failed', false);
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-user', function() {
+        if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
+
+        const userId = $(this).data('id');
+        $.ajax({
+            url: "/api/users/" + userId,
+            type: 'DELETE',
+            success: function(res) {
+                showAlert(res.message, true);
+                loadUsers();
+            },
+            error: function(xhr) {
+                showAlert(xhr.responseJSON?.message || 'Delete failed', false);
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-message', function() {
+        if (!confirm('Are you sure you want to delete this message?')) return;
+
+        const messageId = $(this).data('id');
+        $.ajax({
+            url: "/api/messages/" + messageId,
+            type: 'DELETE',
+            success: function(res) {
+                showAlert(res.message, true);
+                loadMessages();
+            },
+            error: function(xhr) {
+                showAlert(xhr.responseJSON?.message || 'Delete failed', false);
+            }
+        });
+    });
+
+    // Order search functionality
+    $('#searchOrderInput').on('input', function() {
+        const query = $(this).val().toLowerCase();
+        $('table tbody tr').each(function() {
+            const rowText = $(this).text().toLowerCase();
+            $(this).toggle(rowText.includes(query));
+        });
+    });
+
+    // Initial load
+    loadAllData();
+});
+</script>
+{% endblock %}

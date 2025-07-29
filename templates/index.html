@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<style>
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .product-image-container {
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        background: #f8f9fa;
+    }
+
+    .product-image {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin: 10px 0;
+    }
+
+    @media (max-width: 768px) {
+        .product-image-container {
+            height: 200px;
+        }
+
+        .product-grid {
+            margin: 0 -5px;
+        }
+
+        .col-md-6 {
+            padding: 5px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .product-image-container {
+            height: 180px;
+        }
+
+        .card-body {
+            padding: 15px 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+    GjerdevegenShop - Online Shop
+{% endblock %}
+
+{% block content %}
+<div class="products">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-center mb-5">Popular Products</h2>
+                <div class="row product-grid">
+                    {% for product in products %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 product-card">
+                            <div class="product-image-container">
+                                <a href="{{ url_for('product', product_id=product.id) }}">
+                                    <img src="{{ url_for('static', filename='images/' + product.image_file) }}"
+                                         onerror="this.src='{{ url_for('static', filename='images/product_placeholder.png') }}'"
+                                         alt="{{ product.name }}"
+                                         class="card-img-top img-fluid product-image"
+                                         loading="lazy">
+                                </a>
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
+                                <button class="btn btn-primary btn-sm mt-2"
+                                        onclick="addToCart({{ product.id }})">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

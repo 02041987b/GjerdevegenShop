@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Search Results - GjerdevegenShop
+{% endblock %}
+
+{% block content %}
+<div class="products">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col">
+                <h2 class="text-center mb-5">Search Results for "{{ query }}"</h2>
+                <div class="product_grid">
+                    {% for product in products %}
+                    <div class="product">
+                        <div class="product_image">
+                            <a href="{{ url_for('product', product_id=product.id) }}">
+                                <img src="{{ url_for('static', filename='images/' + product.image_file) }}"
+     alt="{{ product.name }}"
+     class="img-fluid rounded shadow-sm"
+     style="max-height: 250px; width: auto; object-fit: contain;">
+                            </a>
+                        </div>
+                        <div class="product_content text-center">
+                            <div class="product_title">
+                                <a href="{{ url_for('product', product_id=product.id) }}">{{ product.name }}</a>
+                            </div>
+                            <div class="product_price">${{ "%.2f"|format(product.price) }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

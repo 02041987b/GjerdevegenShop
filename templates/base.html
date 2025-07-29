@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}GjerdevegenShop{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+</head>
+<body>
+<div class="super_container">
+
+    <header class="header">
+        <div class="header_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_content">
+                            <div class="logo"><a href="{{ url_for('index') }}">GjerdevegenShop</a></div>
+                            <nav class="main_nav">
+                                 <ul>
+                                      <li><a href="{{ url_for('index') }}">Home</a></li>
+                                      <li><a href="{{ url_for('catalog_index') }}">Catalog</a></li>
+                                      <li><a href="{{ url_for('about') }}">About Us</a></li>
+                                      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                                  </ul>
+                            </nav>
+                            <div class="header_extra">
+                                <div class="shopping_cart">
+                                    <a href="{{ url_for('view_cart') }}">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        <div id="cart-count-badge">Cart <span>({{ cart_items_count }})</span></div>
+                                    </a>
+                                </div>
+                                {% if not session.get('user_id') %}
+                                    <form method="POST" action="{{ url_for('login') }}" class="login_form">
+                                        <input type="text" name="username" placeholder="Username" required>
+                                        <input type="password" name="password" placeholder="Password" required>
+                                        <button type="submit">Login</button>
+                                    </form>
+                                    <a href="{{ url_for('register') }}" class="register_link">Register</a>
+                                {% else %}
+                                    <div class="user_profile">
+                                        <a href="{% if session.get('role') == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_profile') }}{% endif %}">
+                                            <i class="fa fa-user"></i> {{ session.get('username') }}
+                                        </a>
+                                    </div>
+                                    <a href="{{ url_for('logout') }}" class="logout_button"><i class="fa fa-sign-out"></i></a>
+                                {% endif %}
+                                <div class="search"><div class="search_icon"><i class="fa fa-search" aria-hidden="true"></i></div></div>
+                                <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search_panel">
+            <div class="container">
+                <form action="{{ url_for('search') }}" method="GET" class="search_form">
+                    <input type="text" class="search_input" placeholder="Search..." required name="q">
+                    <button type="submit" class="search_button"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu menu_mm">
+        <div class="menu_container">
+            <div class="menu_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <ul class="page_menu_nav">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('catalog_index') }}">Catalog</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <hr>
+                {% if not session.get('user_id') %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% else %}
+                    <li><a href="{% if session.get('role') == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('user_profile') }}{% endif %}">My Account</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <main class="main_content">
+        <div class="container mt-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+            {% endwith %}
+        </div>
+        {% block content %}{% endblock %}
+    </main>
+
+    <div class="icon_boxes">
+        <div class="container">
+            <div class="row icon_box_row">
+                <div class="col-lg-4 icon_box_col"><div class="icon_box">
+                    <div class="icon_box_image"><img src="{{ url_for('static', filename='images/deliv.png') }}" alt="Free Shipping"></div>
+                    <div class="icon_box_title">Free Shipping</div></div></div>
+                <div class="col-lg-4 icon_box_col"><div class="icon_box">
+                    <div class="icon_box_image"><img src="{{ url_for('static', filename='images/guarantee.png') }}" alt="Quality Guarantee"></div>
+                    <div class="icon_box_title">Quality Products</div></div></div>
+                <div class="col-lg-4 icon_box_col"><div class="icon_box">
+                    <div class="icon_box_image"><img src="{{ url_for('static', filename='images/service.png') }}" alt="24/7 Support"></div>
+                    <div class="icon_box_title">24/7 Support</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container"><p class="text-center">&copy; {{ current_year }} GjerdevegenShop</p></div>
+    </footer>
+</div>
+
+<script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+<script>
+    function showToast(message, success = true) {
+        // Эта функция создает всплывающее уведомление
+        const toastContainer = document.getElementById('toast-container') || document.createElement('div');
+        if (!toastContainer.id) {
+            toastContainer.id = 'toast-container';
+            toastContainer.style.cssText = "position: fixed; top: 20px; right: 20px; z-index: 1050;";
+            document.body.appendChild(toastContainer);
+        }
+        const toastId = 'toast-' + Date.now();
+        const toastBg = success ? 'bg-success' : 'bg-danger';
+        const toastHTML = `<div id="${toastId}" class="toast align-items-center text-white ${toastBg} border-0" role="alert" aria-live="assertive" aria-atomic="true"><div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div></div>`;
+        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+        const toastElement = new bootstrap.Toast(document.getElementById(toastId));
+        toastElement.show();
+    }
+
+    function addToCart(productId) {
+        $.ajax({
+            url: `/add_to_cart/${productId}`,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    showToast(response.message, true);
+                    $('#cart-count-badge span').text(`(${response.cart_items_count})`);
+                }
+            },
+            error: function(jqXHR) {
+                const errorMessage = jqXHR.responseJSON?.message || "Could not add to cart.";
+                showToast(errorMessage, false);
+            }
+        });
+    }
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>
