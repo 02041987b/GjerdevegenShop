@@ -117,7 +117,7 @@ Setup Instructions
 Clone the repository:
 
 bash
-git clone https://github.com/yourusername/gjerdevegenshop.git
+git clone https://github.com/02041987b/GjerdevegenShop
 cd gjerdevegenshop
 Create and activate virtual environment:
 
@@ -137,7 +137,7 @@ Run the development server:
 
 bash
 flask run
-Access the application at http://localhost:5000
+Access the application at https://cs502025.pythonanywhere.com/
 
 ⚙️ Configuration
 The application can be configured via environment variables or directly in app.py:
@@ -270,12 +270,13 @@ gjerdevegenshop/
 │   ├── admin/            # Admin interface
 │   ├── errors/           # Error pages
 │   └── *.html            # Main templates
+├── instance
+│                         # Database
 ├── app.py                # Main application file
 ├── api_routes.py         # API endpoints
 ├── models.py             # Database models
 ├── decorators.py         # Authentication decorators
 ├── utils.py              # Utility functions
-├── requirements.txt      # Dependencies
 └── README.md             # This file
 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
