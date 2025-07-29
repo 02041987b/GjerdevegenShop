@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Internal Server Error</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An internal server error occurred.">
+
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:300,400,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Переменные для легкой настройки */
+        :root {
+            --bg-color: #eaeaea;
+            --text-color: #3a3a3a;
+            --gear-color: #bababa;
+            --primary-btn: #0d6efd;
+            --primary-hover: #0b5ed7;
+        }
+
+        body {
+            background: var(--bg-color);
+            font-family: 'Encode Sans Semi Condensed', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            opacity: 0; /* Изначально скрыто для плавной анимации появления */
+            animation: fadeInBody 0.5s 0.5s forwards;
+        }
+        
+        @keyframes fadeInBody { to { opacity: 1; } }
+
+        /* Заголовок и текст */
+        h1 {
+            color: var(--text-color);
+            font-size: clamp(5rem, 25vw, 10rem);
+            font-weight: 700;
+            line-height: 1;
+            margin: 0;
+        }
+
+        h2 {
+            margin: 20px 0 10px;
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
+            font-weight: 300;
+        }
+        
+        p {
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+            color: var(--text-color);
+        }
+
+        /* Кнопка "Домой" */
+        .home-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-btn);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .home-link:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ДОБАВЛЕНО: Стили для шестерёнок и их анимаций */
+        .gears {
+            position: relative;
+            margin: 30px auto;
+            width: 150px;
+            height: 150px;
+        }
+
+        .gear {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--gear-color);
+            border-radius: 50%;
+        }
+        
+        .gear .bar {
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            background: var(--gear-color);
+            top: 20px;
+            left: -10px;
+        }
+        .gear .bar:nth-child(2) { transform: rotate(60deg); }
+        .gear .bar:nth-child(3) { transform: rotate(120deg); }
+        
+        .one { top: 12%; left: 12%; animation: clockwise 3s linear infinite; }
+        .two { top: 12%; right: 12%; animation: anticlockwise 3s linear infinite; }
+        .three { bottom: 12%; left: 40%; transform: translateX(-50%); animation: clockwise 3s linear infinite; }
+
+        @keyframes clockwise {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes anticlockwise {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>500</h1>
+    <h2>Internal Server Error</h2>
+    <p>Something went wrong on our end. Our technical team has been notified. Please try again later.</p>
+    
+    <div class="gears">
+        <div class="gear one"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+        <div class="gear two"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+        <div class="gear three"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="home-link" aria-label="Go back to home page">Go to Homepage</a>
+    
+    </body>
+</html>

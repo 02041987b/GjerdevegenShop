@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>403 Forbidden</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Access to this area is forbidden.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ИСПРАВЛЕНО: Все стили и анимации теперь здесь */
+        html {
+            background-color: #000121;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden; /* Убираем лишнюю прокрутку */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .maincontainer {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Ограничиваем максимальную ширину */
+            height: 600px;
+            margin: 0 auto;
+            /* ИСПРАВЛЕНО: Фон загружается из локальной папки */
+            background: url("{{ url_for('static', filename='images/errors/HauntedHouseBackground.png') }}");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain; /* Используем contain для лучшей адаптивности */
+        }
+
+        .foregroundimg {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        .bat-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .bat {
+            opacity: 0;
+            position: absolute;
+            transform-origin: center;
+            z-index: 3;
+        }
+
+        .bat:nth-child(1) {
+            top: 60%; left: 20%;
+            transform: scale(0.5);
+            animation: 13s 1s flyBat1 infinite linear;
+        }
+
+        .bat:nth-child(2) {
+            top: 45%; left: 15%;
+            transform: scale(0.3);
+            animation: 8s 4s flyBat2 infinite linear;
+        }
+
+        .bat:nth-child(3) {
+            top: 30%; left: 25%;
+            transform: scale(0.4);
+            animation: 12s 2s flyBat3 infinite linear;
+        }
+
+        .body { position: relative; width: 50px; top: 12px; }
+        .wing { width: 150px; position: relative; transform-origin: right center; }
+        .leftwing { left: 30px; animation: 0.8s flapLeft infinite ease-in-out; }
+        .rightwing { left: -180px; transform: scaleX(-1); animation: 0.8s flapRight infinite ease-in-out; }
+
+        .text-container {
+            position: relative; /* Чтобы текст и кнопка были поверх */
+            z-index: 10;
+            text-align: center;
+            margin-top: -150px; /* Поднимаем текст поверх картинки */
+        }
+        
+        .errorcode {
+            font-family: 'Creepster', cursive;
+            color: white;
+            font-size: clamp(4rem, 15vw, 8rem);
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+
+        .errortext {
+            color: #FBD130;
+            text-transform: uppercase;
+            font-size: clamp(1.2rem, 4vw, 1.8em);
+        }
+
+        /* ДОБАВЛЕНО: Кнопка "Домой" и ее стили */
+        .home-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background-color: #FBD130;
+            color: #000121;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .home-link:hover {
+            background-color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(251, 209, 48, 0.4);
+        }
+
+        /* Анимации (без изменений) */
+        @keyframes flapLeft { 0% { transform: rotateZ(0); } 50% { transform: rotateZ(10deg) rotateY(40deg); } 100% { transform: rotateZ(0); } }
+        @keyframes flapRight { 0% { transform: scaleX(-1) rotateZ(0); } 50% { transform: scaleX(-1) rotateZ(10deg) rotateY(40deg); } 100% { transform: scaleX(-1) rotateZ(0); } }
+        @keyframes flyBat1 { 0% { opacity: 1; transform: scale(0.5)} 25% { opacity: 1; transform: scale(0.5) translate(-300px, -300px) } 50% { opacity: 0; transform: scale(0.5) translate(400px, -700px) } 100% { opacity: 0; transform: scale(0.5) translate(100px, 300px) } }
+        @keyframes flyBat2 { 0% { opacity: 1; transform: scale(0.3)} 25% { opacity: 1; transform: scale(0.3) translate(200px, -250px) } 50% { opacity: 0; transform: scale(0.3) translate(-300px, -700px) } 100% { opacity: 0; transform: scale(0.3) translate(100px, 300px) } }
+        @keyframes flyBat3 { 0% { opacity: 1; transform: scale(0.4)} 25% { opacity: 1; transform: scale(0.4) translate(-350px, -300px) } 50% { opacity: 0; transform: scale(0.4) translate(400px, -700px) } 100% { opacity: 0; transform: scale(0.4) translate(100px, 300px) } }
+
+    </style>
+</head>
+<body>
+    <div class="maincontainer">
+        <div class="bat-container">
+            <div class="bat">
+                <img class="wing leftwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+                <img class="body" src="{{ url_for('static', filename='images/errors/bat-body.png') }}" alt="bat">
+                <img class="wing rightwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+            </div>
+            <div class="bat">
+                <img class="wing leftwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+                <img class="body" src="{{ url_for('static', filename='images/errors/bat-body.png') }}" alt="bat">
+                <img class="wing rightwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+            </div>
+            <div class="bat">
+                <img class="wing leftwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+                <img class="body" src="{{ url_for('static', filename='images/errors/bat-body.png') }}" alt="bat">
+                <img class="wing rightwing" src="{{ url_for('static', filename='images/errors/bat-wing.png') }}">
+            </div>
+        </div>
+        <img class="foregroundimg" src="{{ url_for('static', filename='images/errors/HauntedHouseForeground.png') }}" alt="haunted house">
+    </div>
+
+    <div class="text-container">
+        <h1 class="errorcode">ERROR 403</h1>
+        <div class="errortext">This area is forbidden. Turn back now!</div>
+        <a href="{{ url_for('index') }}" class="home-link">Take me home</a>
+    </div>
+
+</body>
+</html>

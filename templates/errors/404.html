@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/errors.css') }}">
+
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+
+        <div class="error-media">
+            <img src="{{ url_for('static', filename='images/dribbble_1.gif') }}"
+                 alt="Funny 404 error animation"
+                 class="error-gif"
+                 width="400"
+                 height="300"
+                 loading="lazy"
+                 decoding="async">
+        </div>
+
+        <div class="error-text">
+            <h2>Oops! Page Not Found</h2>
+            <p>The page you were looking for doesn't exist or has been moved.</p>
+
+            <a href="{{ url_for('index') }}" class="home-link" aria-label="Go back to home page">
+                <span class="link-text">Go to Homepage</span>
+                <span class="link-icon">🚀</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
