@@ -1,39 +1,15 @@
-GjerdevegenShop - E-commerce Platform
-📌 Table of Contents
-Project Description
-
-Features
-
-Technologies Used
-
-Installation
-
-Configuration
-
-API Endpoints
-
-Database Models
-
-Error Handling
-
-Project Structure
-
-License
-
 📝 Project Description
 GjerdevegenShop is a comprehensive e-commerce platform developed as part of the CS50 final project. The application provides a complete online shopping experience with user authentication, product catalog, shopping cart functionality, order processing, and an administrative dashboard.
 
+🎥 **Watch the project demo video:** [GjerdevegenShop - Final Project Presentation](https://youtu.be/k3_8or5g-M0)
+
 Key aspects:
 
-Modern responsive design with mobile-first approach
-
-Role-based access control (User/Admin)
-
-RESTful API for frontend-backend communication
-
-Secure payment processing (simulated)
-
-Comprehensive error handling
+- Modern responsive design with mobile-first approach
+- Role-based access control (User/Admin)
+- RESTful API for frontend-backend communication
+- Secure payment processing (simulated)
+- Comprehensive error handling
 
 ✨ Features
 
